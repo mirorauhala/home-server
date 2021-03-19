@@ -8,3 +8,4 @@ This repository includes services such as:
 
 - Gitea
 - Adguard Home
+- Nginx (for static file hosting)
