@@ -1,0 +1,23 @@
+version: "3.1"
+services:
+    nginx:
+        image: nginx:latest
+        restart: always
+        volumes:
+            - /mnt/user/Public:/usr/share/nginx/html:ro
+            - /mnt/user/Docker/nginx/conf/nginx.conf:/etc/nginx/nginx.conf:ro
+            - /mnt/user/Docker/nginx/conf/conf.d:/etc/nginx/conf.d:ro
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.public-content.rule=Host(`content.rauhala.dev`)"
+            - "traefik.http.services.public-content.loadbalancer.server.port=80"
+            - "traefik.http.routers.public-content.entrypoints=https"
+            - "traefik.http.routers.public-content.tls=true"
+            - "traefik.http.routers.public-content.tls.certresolver=http"
+            - "traefik.http.routers.public-content.tls.domains[0].main=rauhala.dev"
+            - "traefik.http.routers.public-content.tls.domains[0].sans=*.rauhala.dev"
+
+networks:
+    default:
+        external:
+            name: web
